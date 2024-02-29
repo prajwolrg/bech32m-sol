@@ -15,7 +15,7 @@ contract bech32m {
             6,   4,   2
     ];
 
-    function polymodStep(uint pre) public pure returns (uint) {
+    function polymodStep(uint pre) internal pure returns (uint) {
         uint b = pre >> 25;
         return (
             ((pre & 0x1ffffff) << 5) ^
@@ -27,17 +27,14 @@ contract bech32m {
         );
     }
 
-    function validateAleoAddr(string memory addr) public view returns ( bool ) {
+    function validateAleoAddr(string memory addr) external view returns ( bool ) {
         require(bytes(addr).length == 63, "Invalid Aleo address length");
-
-        bytes1[] memory addrBytes = new bytes1[](58);
 
         uint chk = 393502710;
 
-        for (uint i = 0; i < addrBytes.length; i++) {
+        for (uint i = 0; i < 58; i++) {
             uint v = ALPHABET_INDEX[uint8(bytes(addr)[i+5]) - 48];
             chk = polymodStep(chk) ^ v;
-            if (i+6 >= addrBytes.length) continue;
         }
         uint ENCODING_CONST = 0x2bc830a3;
         require(chk == ENCODING_CONST, "Invalid checksum");
