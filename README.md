@@ -1,1 +1,1 @@
-Validation of Bech32M Encoding in Solidity for addresses on Aleo.
+Validation of Bech32M Encoding in Solidity for addresses on [Aleo](https://aleo.org/).
